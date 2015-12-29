@@ -10,13 +10,13 @@ import com.troop66matawan.tm.model.ScoutFactory;
 public class RankAdvancementImporter extends TroopmasterImporter {
 	private static final int LASTNAME_INDEX = 0;
 	private static final int FIRSTNAME_INDEX = 1;
-	private static final String SCOUT_RANK ="Scout";
-	private static final String TENDERFOOT_RANK = "Tenderfoot";
-	private static final String SECONDCLASS_RANK ="2nd Class";
-	private static final String FIRSTCLASS_RANK = "1st Class";
-	private static final String STAR_RANK = "Star";
-	private static final String LIFE_RANK = "Life";
-	private static final String EAGLE_RANK = "Eagle";
+	public static final String SCOUT_RANK ="Scout";
+	public static final String TENDERFOOT_RANK = "Tenderfoot";
+	public static final String SECONDCLASS_RANK ="2nd Class";
+	public static final String FIRSTCLASS_RANK = "1st Class";
+	public static final String STAR_RANK = "Star";
+	public static final String LIFE_RANK = "Life";
+	public static final String EAGLE_RANK = "Eagle";
 
 	
 	public RankAdvancementImporter(String filename) throws IOException {
