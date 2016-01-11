@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 
 import com.troop66matawan.tm.importer.MeritBadgeImporter;
+import com.troop66matawan.tm.importer.MeritBadgesEarnedImporter;
 import com.troop66matawan.tm.model.MeritBadge;
 import com.troop66matawan.tm.model.Scout;
 import com.troop66matawan.tm.model.ScoutFactory;
@@ -43,7 +44,8 @@ public class CreateMBcsv {
 	public static void main(String[] args) {
 		if (args.length == 1) {
 			try {
-				MeritBadgeImporter mbi = new MeritBadgeImporter(args[0]);
+				//MeritBadgeImporter mbi = new MeritBadgeImporter(args[0]);
+				MeritBadgesEarnedImporter mbi = new MeritBadgesEarnedImporter(args[0]);
 				mbi.doImport();
 			} catch (IOException e) {
 				e.printStackTrace();

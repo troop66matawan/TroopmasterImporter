@@ -11,8 +11,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import com.troop66matawan.tm.importer.HeaderFormatException;
-import com.troop66matawan.tm.importer.MeritBadgeImporter;
-import com.troop66matawan.tm.importer.RankAdvancementImporter;
+import com.troop66matawan.tm.importer.MeritBadgesEarnedImporter;
+import com.troop66matawan.tm.importer.RankBadgeMatrixImporter;
 import com.troop66matawan.tm.importer.ScoutDataImporter;
 import com.troop66matawan.tm.model.EagleRequiredMeritBadges;
 import com.troop66matawan.tm.model.RankAdvancement;
@@ -100,7 +100,7 @@ public class CreateTrailToEagleMBList {
 	
 	public String createCSVHeader()
 	{
-		return "Last Name, First Name, Rank, Birthday(Months to 18),Total Merit Badges, Remaining Eagle Required Badges";
+		return "Last Name, First Name, Rank, Birthday,Months to 18,Total Merit Badges, Remaining Eagle Required Badges";
 	}
 	
 	public String createCSVRecord(Scout scout)
@@ -116,9 +116,8 @@ public class CreateTrailToEagleMBList {
 		csvRecord +=rank.currentRank();
 		csvRecord +=", ";
 		csvRecord += sdf.format(dob);
-		csvRecord +="(";
+		csvRecord +=",";
 		csvRecord += scout.monthsUntil18(dob);
-		csvRecord +=")";
 		csvRecord +=", ";
 		csvRecord +=scout.getMeritBadges().size();
 		csvRecord +=", ";
@@ -142,7 +141,8 @@ public class CreateTrailToEagleMBList {
 	public static void main(String[] args) {
 	if (args.length == 3) {
 		try {
-			MeritBadgeImporter mbi = new MeritBadgeImporter(args[0]);
+			//MeritBadgeImporter mbi = new MeritBadgeImporter(args[0]);
+			MeritBadgesEarnedImporter mbi = new MeritBadgesEarnedImporter(args[0]);
 			mbi.doImport();
 		} catch (IOException e) {
 			usage();
@@ -150,17 +150,18 @@ public class CreateTrailToEagleMBList {
 			System.exit(1);
 		}
 		try{
-			RankAdvancementImporter rai = new RankAdvancementImporter(args[1]);
+			//RankAdvancementImporter rai = new RankAdvancementImporter(args[1]);
+			RankBadgeMatrixImporter rai = new RankBadgeMatrixImporter(args[1]);
 			rai.doImport();
 		} catch (IOException e) {
 			usage();
 			e.printStackTrace();
 			System.exit(1);
-		} catch (HeaderFormatException e) {
+/*		} catch (HeaderFormatException e) {
 			System.err.println("Unable to parse header for Rank Advancement data");
 			usage();
 			System.exit(1);
-		}
+*/		}
 		try {
 			ScoutDataImporter sdi = new ScoutDataImporter(args[2], true);
 			sdi.doImport();
