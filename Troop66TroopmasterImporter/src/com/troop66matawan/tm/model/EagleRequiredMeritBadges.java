@@ -3,6 +3,18 @@ package com.troop66matawan.tm.model;
 import java.util.List;
 
 public class EagleRequiredMeritBadges {
+	List<MeritBadge> mbs;
+	
+	public EagleRequiredMeritBadges() {
+		mbs = null;
+	}
+	public EagleRequiredMeritBadges(List<MeritBadge> mbList) {
+		mbs = mbList;
+	}
+	
+	public void setMBList(List<MeritBadge> mbList) {
+		mbs = mbList;
+	}
 	public static final MeritBadge CAMPING_MB = new MeritBadge("Camping");
 	public static final MeritBadge CITINCOMMUNITY = new MeritBadge("Cit In Community");
 	public static final MeritBadge NATION_MB = new MeritBadge("Cit In Nation");
@@ -35,7 +47,7 @@ public class EagleRequiredMeritBadges {
 	boolean hasOneOfHikingCyclingSwimming(List<MeritBadge> mbs) {return (mbs.contains(SWIM_MB) || mbs.contains(CYCLING_MB)|| mbs.contains(HIKING_MB)) ;}
 	boolean hasOneofEsciOrSustain(List<MeritBadge> mbs) {return (mbs.contains(ESCI_MB) || mbs.contains(Sustainability_MB)) ;}
 
-	public String listRemaining(List<MeritBadge> mbs)
+	public String listRemaining()
 	{
 		String list="";
 		if (!hasCamping(mbs)){
@@ -93,5 +105,49 @@ public class EagleRequiredMeritBadges {
 		return list;
 	}
 	
+	public int countRemaining()
+	{
+		int  count = 0;
+		if (!hasCamping(mbs)){
+			count++;
+		} 
+		if (!hasCommunity(mbs)){
+			count++;
+		}
+		if (! hasNation(mbs) ) {
+			count++;
+		} 
+		if (! hasWorld(mbs) ) { 
+			count++;
+		} 
+		if (! hasCommunication(mbs) ){
+			count++;
+		} 
+		if (! hasFamilyLife(mbs) ){
+			count++;
+		}
+		if (! hasFirstAid(mbs) ){
+			count++;
+		} 
+		if (! hasCooking(mbs) ){
+			count++;
+		} 
+		if (! hasFitness(mbs) ){
+			count++;
+		} 
+		if (! hasMgmt(mbs) ){
+			count++;
+		} 
+		if (! hasOneOfLifesavingOrEPrep(mbs) ){
+			count++;
+		} 
+		if (! hasOneOfHikingCyclingSwimming(mbs)){ 
+			count++;
+		}
+		if (! hasOneofEsciOrSustain(mbs)) { 
+			count++;
+		}
+		return count;
+	}
 
 }

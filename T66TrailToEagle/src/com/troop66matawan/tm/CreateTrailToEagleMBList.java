@@ -100,7 +100,7 @@ public class CreateTrailToEagleMBList {
 	
 	public String createCSVHeader()
 	{
-		return "Last Name, First Name, Rank, Birthday,Months to 18,Total Merit Badges, Remaining Eagle Required Badges";
+		return "Last Name, First Name, Rank, Birthday,Months to 18,Total Merit Badges,Count of remaining Eagle Badges, Remaining Eagle Required Badges";
 	}
 	
 	public String createCSVRecord(Scout scout)
@@ -108,7 +108,7 @@ public class CreateTrailToEagleMBList {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		RankAdvancement rank = scout.get_rankAdvancement();
 		Date dob = scout.get_dateOfBirth();
-		EagleRequiredMeritBadges eagleMBs = new EagleRequiredMeritBadges();
+		EagleRequiredMeritBadges eagleMBs = new EagleRequiredMeritBadges(scout.getMeritBadges());
 		String csvRecord=scout.get_lastName();
 		csvRecord +=", ";
 		csvRecord +=scout.get_firstName();
@@ -121,7 +121,9 @@ public class CreateTrailToEagleMBList {
 		csvRecord +=", ";
 		csvRecord +=scout.getMeritBadges().size();
 		csvRecord +=", ";
-		csvRecord += eagleMBs.listRemaining(scout.getMeritBadges());
+		csvRecord += eagleMBs.countRemaining();
+		csvRecord +=", ";
+		csvRecord += eagleMBs.listRemaining();
 		
 		return csvRecord;
 		
