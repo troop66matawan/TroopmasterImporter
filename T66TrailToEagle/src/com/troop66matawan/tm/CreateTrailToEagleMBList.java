@@ -44,7 +44,7 @@ public class CreateTrailToEagleMBList {
 		{
 			RankAdvancement rank = scout.get_rankAdvancement();
 			Date dob = scout.get_dateOfBirth();
-			if ( (rank.get_life() != null) || (olderThanMinAge(dob)))
+			if ( (rank.get_eagle() == null) && (rank.get_life() != null || (rank.get_life() == null && (olderThanMinAge(dob)))))
 			{
 				trailToEagleScouts.add(scout);
 				++numberOfTrailToEagleScouts;
