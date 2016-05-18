@@ -9,7 +9,7 @@ import com.troop66matawan.tm.model.ScoutFactory;
 public class LeadershipPositionDaysNeededImporter extends TroopmasterImporter {
 	private static final int LDR_POS_startindex = 83;
 
-	LeadershipPositionDaysNeededImporter(String filename) throws IOException {
+	public LeadershipPositionDaysNeededImporter(String filename) throws IOException {
 		super(filename);
 	}
 	public void doImport() throws IOException {
@@ -32,7 +32,7 @@ public class LeadershipPositionDaysNeededImporter extends TroopmasterImporter {
 		if (ra == null || ra.getIsValid() != true)
 			ra = new RankAdvancement();
 		int index = LDR_POS_startindex;
-		int spaceAfterIndex = line.indexOf(" ", index);
+		int spaceAfterIndex = line.indexOf(" ", index+3);
 		String hoursString = line.substring(index, spaceAfterIndex).trim();
 		Integer days = Integer.valueOf(hoursString);
 		ra.set_neededLeadership(days);

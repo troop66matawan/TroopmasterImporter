@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import com.troop66matawan.tm.importer.HeaderFormatException;
+import com.troop66matawan.tm.importer.LeadershipPositionDaysNeededImporter;
 import com.troop66matawan.tm.importer.MeritBadgesEarnedImporter;
 import com.troop66matawan.tm.importer.RankBadgeMatrixImporter;
 import com.troop66matawan.tm.importer.ScoutDataImporter;
@@ -100,13 +101,14 @@ public class CreateTrailToEagleMBList {
 	
 	public String createCSVHeader()
 	{
-		return "Last Name, First Name, Rank, Birthday,Months to 18,Total Merit Badges,Count of remaining Eagle Badges, Remaining Eagle Required Badges";
+		return "Last Name, First Name, Rank, Birthday,Months to 18,Leadership Remaining,Total Merit Badges,Count of remaining Eagle Badges, Remaining Eagle Required Badges";
 	}
 	
 	public String createCSVRecord(Scout scout)
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		RankAdvancement rank = scout.get_rankAdvancement();
+		Integer leadershipDays = rank.get_neededLeadership();
 		Date dob = scout.get_dateOfBirth();
 		EagleRequiredMeritBadges eagleMBs = new EagleRequiredMeritBadges(scout.getMeritBadges());
 		String csvRecord=scout.get_lastName();
@@ -119,6 +121,9 @@ public class CreateTrailToEagleMBList {
 		csvRecord +=",";
 		csvRecord += scout.monthsUntil18(dob);
 		csvRecord +=", ";
+		if (leadershipDays != null)
+			csvRecord += leadershipDays;
+		csvRecord += ", ";
 		csvRecord +=scout.getMeritBadges().size();
 		csvRecord +=", ";
 		csvRecord += eagleMBs.countRemaining();
@@ -141,7 +146,7 @@ public class CreateTrailToEagleMBList {
 	}
 	
 	public static void main(String[] args) {
-	if (args.length == 3) {
+	if (args.length >= 3 && args.length <= 4) {
 		try {
 			//MeritBadgeImporter mbi = new MeritBadgeImporter(args[0]);
 			MeritBadgesEarnedImporter mbi = new MeritBadgesEarnedImporter(args[0]);
@@ -175,6 +180,16 @@ public class CreateTrailToEagleMBList {
 			System.err.println("Unable to parse header for Scout data");
 			usage();
 			System.exit(1);
+		}
+		if (args.length == 4) {
+			try {
+				LeadershipPositionDaysNeededImporter lpi = new LeadershipPositionDaysNeededImporter(args[3]);
+				lpi.doImport();
+			} catch (IOException e) {
+				usage();
+				e.printStackTrace();
+				System.exit(1);
+			}
 		}
 		
 	
