@@ -41,7 +41,9 @@ public class RankBadgeMatrixImporter extends TroopmasterImporter {
 
 	private void parseRankDateLine(ScoutFactory f, String line) {
 		Scout scout = getScout(f, line);
-		RankAdvancement ra = new RankAdvancement();
+		RankAdvancement ra = scout.get_rankAdvancement();
+		if (ra == null || ra.getIsValid() != true)
+			ra = new RankAdvancement();
 		int index = SCOUT_DATE_startindex;
 		for (Ranks r : Ranks.values()) {
 			String dateString = getDateString(line,index);
@@ -84,17 +86,5 @@ public class RankBadgeMatrixImporter extends TroopmasterImporter {
 		return dateString;
 	}
 	
-	private Scout getScout(ScoutFactory f, String line) {
-		// Substring before comma is last name, from comma to space is first name
-		int commaIndex = line.indexOf(",");
-		String lName = line.substring(0, commaIndex);
-		int spaceAfterNameIndex = line.indexOf(" ", commaIndex+2);
-		String fName = line.substring(commaIndex+2, spaceAfterNameIndex);
-
-		if (!f.hasScout(lName, fName)) {
-			f.addScout(lName, fName);
-		}
-		return f.getScout(lName, fName);
-	}
 
 }

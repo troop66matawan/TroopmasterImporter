@@ -78,16 +78,7 @@ public class MeritBadgesEarnedImporter extends TroopmasterImporter {
 		while (line != null) {
 			// if no current scout, look for line containing string "Rank:"
 			if (scout == null  &&  line.contains("Rank:")) {
-				// Substring before comma is last name, from comma to space is first name
-				int commaIndex = line.indexOf(",");
-				String lName = line.substring(0, commaIndex);
-				int spaceAfterNameIndex = line.indexOf(" ", commaIndex+2);
-				String fName = line.substring(commaIndex+2, spaceAfterNameIndex);
-
-				if (!f.hasScout(lName, fName)) {
-					f.addScout(lName, fName);
-				}
-				scout = f.getScout(lName, fName);
+				scout = getScout(f,line);
 			} else if (scout != null) {
 				if (line.contains("\f")){
 					scout = null;

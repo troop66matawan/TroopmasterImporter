@@ -8,6 +8,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.troop66matawan.tm.model.Scout;
+import com.troop66matawan.tm.model.ScoutFactory;
+
 public class TroopmasterImporter {
 
 	protected BufferedReader _reader;
@@ -27,7 +30,26 @@ public class TroopmasterImporter {
 		}
 		return rv ;		
 	}
-	
+	public Scout getScout(ScoutFactory f, String line) {
+		// Substring before comma is last name, from comma to space is first name
+		int commaIndex = line.indexOf(",");
+		int startIndex = 0;
+		if (line.startsWith("*"))
+		{
+			startIndex = 1;
+		}
+			
+		String lName = line.substring(startIndex, commaIndex);
+		int spaceAfterNameIndex = line.indexOf(" ", commaIndex+2);
+		String fName = line.substring(commaIndex+2, spaceAfterNameIndex);
+
+		if (!f.hasScout(lName, fName)) {
+			f.addScout(lName, fName);
+		}
+		return f.getScout(lName, fName);
+	}
+
+
 	public Date stringToDate(String x) {
 		String[] date = x.split("/");
 		if (date.length ==3) {

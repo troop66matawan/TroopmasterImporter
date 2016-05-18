@@ -3,6 +3,7 @@ package com.troop66matawan.tm.model;
 import java.util.Date;
 
 public class RankAdvancement {
+	private boolean _isValid = false;
 	private Date _scout = null;
 	private Date _tenderfoot = null;
 	private Date _2ndClass = null;
@@ -10,9 +11,15 @@ public class RankAdvancement {
 	private Date _star = null;
 	private Date _life = null;
 	private Date _eagle = null;
+	private Integer _neededLeadership = null;
+	private Integer _neededServiceHours = null;
 	
 	public RankAdvancement() {
 		
+	}
+	
+	public boolean getIsValid() {
+		return _isValid;
 	}
 
 	public Date get_scout() {
@@ -25,30 +32,37 @@ public class RankAdvancement {
 
 	public void set_scout(Date _scout) {
 		this._scout = _scout;
+		_isValid = true;
 	}
 
 	public void set_tenderfoot(Date _tenderfoot) {
 		this._tenderfoot = _tenderfoot;
+		_isValid = true;
 	}
 
 	public void set_2ndClass(Date _2ndClass) {
 		this._2ndClass = _2ndClass;
+		_isValid = true;
 	}
 
 	public void set_1stClass(Date _1stClass) {
 		this._1stClass = _1stClass;
+		_isValid = true;
 	}
 
 	public void set_star(Date _star) {
 		this._star = _star;
+		_isValid = true;
 	}
 
 	public void set_life(Date _life) {
 		this._life = _life;
+		_isValid = true;
 	}
 
 	public void set_eagle(Date _eagle) {
 		this._eagle = _eagle;
+		_isValid = true;
 	}
 
 	public Date get_2ndClass() {
@@ -89,5 +103,23 @@ public class RankAdvancement {
 			rank = "Scout";
 		
 		return rank;
+	}
+
+	public Integer get_neededLeadership() {
+		return _neededLeadership;
+	}
+
+	public void set_neededLeadership(Integer _neededLeadership) {
+		this._neededLeadership = _neededLeadership;
+		_isValid = true;
+	}
+
+	public Integer get_neededServiceHours() {
+		return _neededServiceHours;
+	}
+
+	public void set_neededServiceHours(Integer _neededServiceHours) {
+		this._neededServiceHours = _neededServiceHours;
+		_isValid = true;
 	}
 }
