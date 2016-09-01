@@ -1,5 +1,7 @@
+build
 bin
 .classpath
 .project
 .settings
 .metadata
+.gradle

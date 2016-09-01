@@ -14,7 +14,7 @@ import java.util.Map;
 
 import java.util.TreeMap;
 
-import com.troop66matawan.tm.importer.MeritBadgeImporter;
+import com.troop66matawan.tm.importer.MeritBadgesEarnedImporter;
 import com.troop66matawan.tm.model.MeritBadge;
 import com.troop66matawan.tm.model.Scout;
 import com.troop66matawan.tm.model.ScoutFactory;
@@ -84,7 +84,7 @@ public class T66MeritBadges {
 		if (args.length == 2) {
 			//System.out.println("Merit Badge importer");
 			try {
-				MeritBadgeImporter mbi = new MeritBadgeImporter(args[0]);
+				MeritBadgesEarnedImporter mbi = new MeritBadgesEarnedImporter(args[0]);
 				mbi.doImport();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
