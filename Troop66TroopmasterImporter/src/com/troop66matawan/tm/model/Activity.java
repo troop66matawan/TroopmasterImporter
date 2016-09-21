@@ -2,12 +2,24 @@ package com.troop66matawan.tm.model;
 
 import java.util.Date;
 
+import com.troop66matawan.tm.exporter.JSON;
+
 public abstract class Activity {
 	protected Date activityDate;
 	protected Integer amount;
 	protected String location;
 	protected String remarks;
 	
+	public JSON toJSON() {
+		JSON json = new JSON();
+		
+		json.addKeyValuePair("date", activityDate);
+		json.addKeyValuePair("amount", amount);
+		json.addKeyValuePair("location", location.trim());
+		json.addKeyValuePair("remarks", remarks.trim());
+		
+		return json;
+	}
 	public Date getActivityDate() {
 		return activityDate;
 	}

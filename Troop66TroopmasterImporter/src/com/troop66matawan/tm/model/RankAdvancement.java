@@ -2,6 +2,8 @@ package com.troop66matawan.tm.model;
 
 import java.util.Date;
 
+import com.troop66matawan.tm.exporter.JSON;
+
 public class RankAdvancement {
 	private boolean _isValid = false;
 	private Date _scout = null;
@@ -17,7 +19,23 @@ public class RankAdvancement {
 	public RankAdvancement() {
 		
 	}
-	
+	public JSON toJSON() {
+		final Integer JSONversion = 1;
+		JSON json = new JSON();	
+		
+		json.addKeyValuePair("version",JSONversion.toString());
+		json.addKeyValuePair("scout",_scout);
+		json.addKeyValuePair("tenderfoot",_tenderfoot);
+		json.addKeyValuePair("2ndClass",_2ndClass);
+		json.addKeyValuePair("1stClass",_1stClass);
+		json.addKeyValuePair("star",_star);
+		json.addKeyValuePair("life",_life);
+		json.addKeyValuePair("eagle",_eagle);
+		
+		
+		return json;
+	}
+
 	public boolean getIsValid() {
 		return _isValid;
 	}

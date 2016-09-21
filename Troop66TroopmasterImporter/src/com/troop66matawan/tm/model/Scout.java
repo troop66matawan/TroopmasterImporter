@@ -6,16 +6,45 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.troop66matawan.tm.exporter.JSON;
+import com.troop66matawan.tm.exporter.JSON.JSONArray;
+
 public class Scout {
 	private String _lastName;
 	private String _firstName;
 	private List<MeritBadge> _meritBadges = new ArrayList<MeritBadge>();
 	private List<ScoutAwards> _awards = new ArrayList<ScoutAwards>();
 	private RankAdvancement _rankAdvancement;
-	private Integer _campingNights;
+	private Integer _campingNights=0;
 	private List<Activity> _activities = new ArrayList<Activity>();
 	private String _bsaID;
 	private Date _dateOfBirth;
+
+	public JSON toJSON() {
+		final Integer JSONversion = 1;
+		JSON json = new JSON();	
+		
+		json.addKeyValuePair("version",JSONversion.toString());
+		json.addKeyValuePair("lastName",_lastName);
+		json.addKeyValuePair("firstName",_firstName);
+		json.addKeyValuePair("campingnights",_campingNights);
+		json.addKeyValuePair("bsaID",_bsaID);
+		json.addKeyValuePair("dateOfBirth",_dateOfBirth);
+		json.addKeyValuePair("ranks", _rankAdvancement.toJSON());
+		JSONArray camping = json.new JSONArray();
+		for (Activity act : _activities) {
+			if (act instanceof Camping) {
+				camping.addJson(act.toJSON());
+			}
+		}
+		json.addKeyValuePair("camping", camping);
+		JSONArray meritBadges = json.new JSONArray();
+		for (MeritBadge mb : _meritBadges) {
+			meritBadges.addJson(mb.toJSON());
+		}
+		json.addKeyValuePair("meritbadges", meritBadges);
+		return json;
+	}
 
 	public Integer get_campingNights() {
 		return _campingNights;

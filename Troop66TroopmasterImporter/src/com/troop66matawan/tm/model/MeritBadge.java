@@ -2,6 +2,8 @@ package com.troop66matawan.tm.model;
 
 import java.util.Date;
 
+import com.troop66matawan.tm.exporter.JSON;
+
 public class MeritBadge {
 	private String _name;
 	private Date _earned;
@@ -10,6 +12,15 @@ public class MeritBadge {
 	}
 	public MeritBadge(String name) {
 		_name = name;
+	}
+	
+	public JSON toJSON() {
+		JSON json = new JSON();
+		
+		json.addKeyValuePair("name", _name);
+		json.addKeyValuePair("earned", _earned);
+		
+		return json;
 	}
 	public String get_name() {
 		return _name;

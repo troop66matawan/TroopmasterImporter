@@ -2,6 +2,8 @@ package com.troop66matawan.tm.model;
 
 import java.util.Date;
 
+import com.troop66matawan.tm.exporter.JSON;
+
 public class Camping extends Activity {
 	protected boolean isCabin = false;
 
@@ -17,5 +19,11 @@ public class Camping extends Activity {
 		
 	}
 
+	public JSON toJSON() {
+		JSON json = super.toJSON();
+		
+		json.addKeyValuePair("isCabin", isCabin);
+		return json;		
+	}
 
 }
