@@ -35,7 +35,7 @@ public class CreateTrailToEagleMBList {
 		minAge = age;
 	}
 	public static void usage() {
-		System.err.println("Usage: <path to Merit Badge export> <path to Rank Advancement> <path to Scout Data>");
+		System.err.println("Usage: <path to Merit Badge export> <path to Rank Advancement> <path to Scout Data> [<path to leadership remaining>]");
 	}
 	
 	public int findTrailToEagleScouts(Collection<Scout> scouts)
@@ -201,7 +201,7 @@ public class CreateTrailToEagleMBList {
 		
 	}
 	else {
-		System.err.println("Required arguments: path to Scout Merit Badge export");
+		usage();
 	}
 }
 
