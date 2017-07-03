@@ -1,17 +1,15 @@
 package com.troop66matawan.tm;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
-
-
-
 import java.util.TreeMap;
 
 import com.troop66matawan.tm.importer.MeritBadgesEarnedImporter;
@@ -23,6 +21,8 @@ public class T66MeritBadges {
 	private Map<String, Integer> mbcount;
 	private Date startDate;
 	private Date endDate;
+	private String printStart;
+	static DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 	
 	class ValueComparator implements Comparator<String> {
 		 
@@ -43,11 +43,19 @@ public class T66MeritBadges {
 	
 	T66MeritBadges(Integer year)
 	{
+		printStart = "in " + year.toString();
 		startDate = getDate(1,1,year);
 		endDate = getDate(12,31,year);
 		mbcount = new HashMap<String,Integer>();
 	}
-	
+	T66MeritBadges(Date _startDate)
+	{	
+		printStart = "since " + df.format(_startDate);
+		startDate = _startDate;
+		endDate = Calendar.getInstance().getTime();
+		mbcount = new HashMap<String,Integer>();
+	}
+
 	private Date getDate(Integer month, Integer day, Integer year)
 	{
 		Calendar c = Calendar.getInstance();
@@ -78,9 +86,13 @@ public class T66MeritBadges {
 		sortedMap.putAll(mbcount);
 		return sortedMap;
 	}
-	
+	private String printStart() {
+		return printStart;
+	}
 	public static void main(String[] args) {
 		Integer year;
+		Date startDate;
+		T66MeritBadges t66MB = null;
 		if (args.length == 2) {
 			//System.out.println("Merit Badge importer");
 			try {
@@ -90,10 +102,18 @@ public class T66MeritBadges {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			year = new Integer(args[1]);
-		
-			//ScoutFactory.getInstance().dump();
-			T66MeritBadges t66MB = new T66MeritBadges(year);
+			try {
+				year = new Integer(args[1]);
+				t66MB = new T66MeritBadges(year);
+			} catch (NumberFormatException e) {
+				try {
+					startDate = df.parse(args[1]);
+					t66MB = new T66MeritBadges(startDate);
+				} catch (ParseException ex) {
+					System.err.println("Usage: <TM Scout MB data> <year | startDate(mm/dd/yyyy)>");
+					System.exit(1);
+				}
+			}
 			ScoutFactory sf = ScoutFactory.getInstance();
 			for (Scout s : sf.getScouts()) {
 				t66MB.getMeritBadgesByYear(s.getMeritBadges());
@@ -101,13 +121,14 @@ public class T66MeritBadges {
 			
 			TreeMap<String, Integer> annualMBs = t66MB.sortByValue();
 			
+			System.out.println("MB Name,# of Scouts Achievied " + t66MB.printStart());		
 			for (Map.Entry<String, Integer> mapEntry : annualMBs.entrySet()){
 				System.out.println(mapEntry.getKey() + ", " + mapEntry.getValue());
 			}
 			
 			
 		} else {
-			System.out.println("Usage: <TM Scout MB data> <year>");
+			System.out.println("Usage: <TM Scout MB data> <year| startDate(mm/dd/yyyy)>");
 		}
 	}
 }

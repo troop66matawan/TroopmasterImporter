@@ -26,8 +26,8 @@ public class RankAdvancement {
 		json.addKeyValuePair("version",JSONversion.toString());
 		json.addKeyValuePair("scout",_scout);
 		json.addKeyValuePair("tenderfoot",_tenderfoot);
-		json.addKeyValuePair("2ndClass",_2ndClass);
-		json.addKeyValuePair("1stClass",_1stClass);
+		json.addKeyValuePair("secondClass",_2ndClass);
+		json.addKeyValuePair("firstClass",_1stClass);
 		json.addKeyValuePair("star",_star);
 		json.addKeyValuePair("life",_life);
 		json.addKeyValuePair("eagle",_eagle);
