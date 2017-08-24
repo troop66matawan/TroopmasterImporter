@@ -19,7 +19,7 @@ public class ExportToJSON {
 	}
 	
 	public static void usage() {
-		System.err.println("Usage: <path to Merit Badge export> <path to Rank Advancement> <path to Scout Data>");
+		System.err.println("Usage: <path to Merit Badge export> <path to Rank Advancement> <path to Scout Data> <path to Individual Participation> [<path to Leadership needed]");
 	}
 	
 	public static void main(String[] args) {
@@ -87,7 +87,7 @@ public class ExportToJSON {
 
 	}
 	else {
-		System.err.println("Required arguments: path to Scout Merit Badge export");
+		usage();
 	}
 }
 
