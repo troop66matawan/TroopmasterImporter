@@ -6,7 +6,7 @@ import java.util.Date;
 public abstract class PartialMeritBadge extends MeritBadge {
 	private Date startDate;
 	private Date lastProgress;
-	private ArrayList<Requirement> _requirements; 
+	protected ArrayList<Requirement> _requirements; 
 	
 	public PartialMeritBadge () {
 		_requirements = new ArrayList<Requirement>();
@@ -29,10 +29,7 @@ public abstract class PartialMeritBadge extends MeritBadge {
 		this.startDate = startDate;
 	}
 	
-	public ArrayList<Requirement> get_requirements() {
-		return _requirements;
-	}
-	public void set_requirements(ArrayList<Requirement> _requirements) {
-		this._requirements = _requirements;
-	}
+	abstract public ArrayList<Requirement> get_requirements();
+
+	abstract public void set_requirements(ArrayList<Requirement> _requirements) ;
 }
