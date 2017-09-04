@@ -22,8 +22,8 @@ repositories {
 }
 dependencies {
     compile  group: 'com.google.firebase', name: 'firebase-admin', version:'5.3.0'
-    compile  name: 'Troop66TroopmasterImporter', version: '1.2.1'
-    runtime  name: 'Troop66TroopmasterImporter', version: '1.2.1'
+    compile  name: 'Troop66TroopmasterImporter', version: '1.2.2'
+    runtime  name: 'Troop66TroopmasterImporter', version: '1.2.2'
 }
 
 sourceSets {

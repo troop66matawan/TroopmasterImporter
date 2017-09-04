@@ -20,8 +20,8 @@ repositories {
 	}
 }
 dependencies {
-    compile  name: 'Troop66TroopmasterImporter', version: '1.0.0'
-    runtime  name: 'Troop66TroopmasterImporter', version: '1.0.0'
+    compile  name: 'Troop66TroopmasterImporter', version: '1.2.2'
+    runtime  name: 'Troop66TroopmasterImporter', version: '1.2.2'
 }
 
 sourceSets {

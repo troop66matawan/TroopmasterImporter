@@ -125,11 +125,15 @@ public class ExportToFirebase {
 		Map<String, Object> scoutUpdates = new HashMap<String, Object>();
 
 		Scout scout = it.next();
-		scoutUpdates.put(scout.get_firstName()+scout.get_lastName(),scout);
+		ExportScout exScout = new ExportScout(scout);
+		exScout.parseActivities();
+		scoutUpdates.put(scout.get_firstName()+scout.get_lastName(),exScout);
 
 		while (it.hasNext()) {
 			scout = it.next();
-			scoutUpdates.put(scout.get_firstName()+scout.get_lastName(),scout);
+			exScout = new ExportScout(scout);
+			exScout.parseActivities();
+			scoutUpdates.put(scout.get_firstName()+scout.get_lastName(),exScout);
 		}
 		scoutRef.updateChildren(scoutUpdates);
 	}

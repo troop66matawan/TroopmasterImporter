@@ -31,7 +31,19 @@ public class ScoutIndividualParticipationImporter extends TroopmasterImporter{
 					f.addScout(lName, fName);
 				}
 				scout = f.getScout(lName, fName);
-			} else if (scout != null)
+			} else if (scout == null && line.contains(",") && line.contains("(cont)")) {
+				// page continuation
+				int commaIndex = line.indexOf(",");
+				String lName = line.substring(0, commaIndex);
+				int spaceAfterNameIndex = line.indexOf(" ", commaIndex+2);
+				String fName = line.substring(commaIndex+2, spaceAfterNameIndex);
+
+				if (!f.hasScout(lName, fName)) {
+					f.addScout(lName, fName);
+				}
+				scout = f.getScout(lName, fName);
+				
+			}else if (scout != null)
 			{
 				if (line.contains("\f")){
 					activityList = false;
@@ -45,7 +57,14 @@ public class ScoutIndividualParticipationImporter extends TroopmasterImporter{
 							amount = Integer.valueOf(line.substring(31,34).trim());
 						} catch (NumberFormatException e)
 						{
-							//do nothing
+							// Try to see if floating 
+							try {
+								String value = line.substring(30,34).trim();
+								Float amt = Float.valueOf(value);
+								amount = Math.round(amt);
+							} catch (NumberFormatException ex) {
+								// give up do nothing;
+							}
 						}
 						// Location field size = 19, Remarks Size = 29
 						String location = line.substring(36,54);

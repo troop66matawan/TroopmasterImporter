@@ -7,6 +7,10 @@ import com.troop66matawan.tm.exporter.JSON;
 public class Camping extends Activity {
 	protected boolean isCabin = false;
 
+	public boolean isCabin() {
+		return isCabin;
+	}
+
 	/**
 	 * 
 	 */

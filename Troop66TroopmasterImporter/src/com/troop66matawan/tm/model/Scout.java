@@ -10,17 +10,17 @@ import com.troop66matawan.tm.exporter.JSON;
 import com.troop66matawan.tm.exporter.JSON.JSONArray;
 
 public class Scout {
-	private String _lastName;
-	private String _firstName;
-	private List<MeritBadge> _meritBadges = new ArrayList<MeritBadge>();
-	private List<ScoutAwards> _awards = new ArrayList<ScoutAwards>();
-	private RankAdvancement _rankAdvancement;
-	private Integer _campingNights=0;
-	private List<Activity> _activities = new ArrayList<Activity>();
-	private String _bsaID;
-	private Date _dateOfBirth;
-	private List<PositionOfResponsibility> _leadership = new ArrayList<PositionOfResponsibility>();
-	private Date _reportDate = new Date();
+	protected String _lastName;
+	protected String _firstName;
+	protected List<MeritBadge> _meritBadges = new ArrayList<MeritBadge>();
+	protected List<ScoutAwards> _awards = new ArrayList<ScoutAwards>();
+	protected RankAdvancement _rankAdvancement;
+	protected Integer _campingNights=0;
+	protected List<Activity> _activities = new ArrayList<Activity>();
+	protected String _bsaID;
+	protected Date _dateOfBirth;
+	protected List<PositionOfResponsibility> _leadership = new ArrayList<PositionOfResponsibility>();
+	protected Date _reportDate = new Date();
 
 	public Date get_reportDate() {
 		return _reportDate;
@@ -71,7 +71,7 @@ public class Scout {
 	public void set_rankAdvancement(RankAdvancement _rankAdvancement) {
 		this._rankAdvancement = _rankAdvancement;
 	}
-	Scout(String lastname, String firstname) {
+	public Scout(String lastname, String firstname) {
 		_lastName = lastname;
 		_firstName = firstname;
 	}
