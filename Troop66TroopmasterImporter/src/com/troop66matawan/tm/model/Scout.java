@@ -22,6 +22,10 @@ public class Scout {
 	private List<PositionOfResponsibility> _leadership = new ArrayList<PositionOfResponsibility>();
 	private Date _reportDate = new Date();
 
+	public Date get_reportDate() {
+		return _reportDate;
+	}
+
 	public JSON toJSON() {
 		final Integer JSONversion = 2;
 		JSON json = new JSON();	
