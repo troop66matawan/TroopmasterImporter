@@ -1,26 +1,26 @@
 package com.troop66matawan.tm;
 
-import java.io.IOException;
-import java.io.FileNotFoundException;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.HashMap;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.FirebaseCredentials;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.troop66matawan.tm.importer.HeaderFormatException;
 import com.troop66matawan.tm.importer.LeadershipPositionDaysNeededImporter;
 import com.troop66matawan.tm.importer.MeritBadgesEarnedImporter;
 import com.troop66matawan.tm.importer.RankBadgeMatrixImporter;
 import com.troop66matawan.tm.importer.ScoutDataImporter;
 import com.troop66matawan.tm.importer.ScoutIndividualParticipationImporter;
+import com.troop66matawan.tm.importer.*;
 import com.troop66matawan.tm.model.Scout;
 import com.troop66matawan.tm.model.ScoutFactory;
-
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.auth.FirebaseCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class ExportToFirebase {
 
@@ -33,7 +33,7 @@ public class ExportToFirebase {
 	}
 
 	public static void main(String[] args) {
-	if (args.length >= 5 && args.length <= 6) {
+	if (args.length >= 6 && args.length <= 7) {
 		try {
 			MeritBadgesEarnedImporter mbi = new MeritBadgesEarnedImporter(args[1]);
 			mbi.doImport();
@@ -70,9 +70,17 @@ public class ExportToFirebase {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		if (args.length == 6) {
+		try {
+			IndividualHistoryImporter sipi = new IndividualHistoryImporter(args[5]);
+			sipi.doImport();
+		} catch (IOException e ) {
+			usage();
+			e.printStackTrace();
+			System.exit(1);			
+		}		
+		if (args.length == 7) {
 			try {
-				LeadershipPositionDaysNeededImporter lpi = new LeadershipPositionDaysNeededImporter(args[5]);
+				LeadershipPositionDaysNeededImporter lpi = new LeadershipPositionDaysNeededImporter(args[6]);
 				lpi.doImport();
 			} catch (IOException e) {
 				usage();
@@ -81,21 +89,29 @@ public class ExportToFirebase {
 			}
 		}
 
+		export(args[0]);
+	}
+	else {
+		usage();
+	}
+}
+
+	private static void export(String firebaseAccountSettings) {
 		try {
-			FileInputStream serviceAccount = new FileInputStream(args[0]);
+			FileInputStream serviceAccount = new FileInputStream(firebaseAccountSettings);
 
 			FirebaseOptions options = new FirebaseOptions.Builder()
-			  .setCredential(FirebaseCredentials.fromCertificate(serviceAccount))
-			    .setDatabaseUrl("https://t66scoutinfo.firebaseio.com/")
-			      .build();
+				.setCredential(FirebaseCredentials.fromCertificate(serviceAccount))
+				.setDatabaseUrl("https://t66scoutinfo.firebaseio.com/")
+			    .build();
 
-						FirebaseApp.initializeApp(options);
+			FirebaseApp.initializeApp(options);
 		} catch (FileNotFoundException e) {
-					System.err.println("Unable to load firebase config:"+e);
-					e.printStackTrace();
-					System.exit(1);
+			System.err.println("Unable to load firebase config:"+e);
+			e.printStackTrace();
+			System.exit(1);
 		}
-	  catch (IOException e) {
+		catch (IOException e) {
 			System.err.println("Unable to initialize firebase");
 			System.exit(1);
 		}
@@ -105,24 +121,17 @@ public class ExportToFirebase {
 			.getReference("scouts");
 
 		ScoutFactory sf = ScoutFactory.getInstance();
-		//System.out.println("[");
 		Iterator<Scout> it = sf.getScouts().iterator();
 		Map<String, Object> scoutUpdates = new HashMap<String, Object>();
 
 		Scout scout = it.next();
 		scoutUpdates.put(scout.get_firstName()+scout.get_lastName(),scout);
-//		System.out.print(scout.toJSON().toString());
+
 		while (it.hasNext()) {
-//			System.out.println(",");
 			scout = it.next();
 			scoutUpdates.put(scout.get_firstName()+scout.get_lastName(),scout);
-//			System.out.print(scout.toJSON().toString());
 		}
 		scoutRef.updateChildren(scoutUpdates);
 	}
-	else {
-		usage();
-	}
-}
 
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import com.troop66matawan.tm.importer.HeaderFormatException;
+import com.troop66matawan.tm.importer.IndividualHistoryImporter;
 import com.troop66matawan.tm.importer.LeadershipPositionDaysNeededImporter;
 import com.troop66matawan.tm.importer.MeritBadgesEarnedImporter;
 import com.troop66matawan.tm.importer.RankBadgeMatrixImporter;
@@ -19,11 +20,11 @@ public class ExportToJSON {
 	}
 	
 	public static void usage() {
-		System.err.println("Usage: <path to Merit Badge export> <path to Rank Advancement> <path to Scout Data> <path to Individual Participation> [<path to Leadership needed]");
+		System.err.println("Usage: <path to Merit Badge export> <path to Rank Advancement> <path to Scout Data> <path to Individual Participation> <path to Individual history> [<path to Leadership needed]");
 	}
 	
 	public static void main(String[] args) {
-	if (args.length >= 4 && args.length <= 5) {
+	if (args.length >= 5 && args.length <= 6) {
 		try {
 			MeritBadgesEarnedImporter mbi = new MeritBadgesEarnedImporter(args[0]);
 			mbi.doImport();
@@ -60,9 +61,17 @@ public class ExportToJSON {
 			e.printStackTrace();
 			System.exit(1);			
 		}
-		if (args.length == 5) {
+		try {
+			IndividualHistoryImporter sipi = new IndividualHistoryImporter(args[4]);
+			sipi.doImport();
+		} catch (IOException e ) {
+			usage();
+			e.printStackTrace();
+			System.exit(1);			
+		}
+		if (args.length == 6) {
 			try {
-				LeadershipPositionDaysNeededImporter lpi = new LeadershipPositionDaysNeededImporter(args[4]);
+				LeadershipPositionDaysNeededImporter lpi = new LeadershipPositionDaysNeededImporter(args[5]);
 				lpi.doImport();
 			} catch (IOException e) {
 				usage();
