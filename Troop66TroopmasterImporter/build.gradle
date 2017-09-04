@@ -11,12 +11,13 @@
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 
-project.version = '1.1.0'
+project.version = '1.2.0'
 
 sourceSets {
 	main {
 		java {
 			srcDir 'src'
+			exclude '**/meritbadges/*'
 		}
 	}
 }

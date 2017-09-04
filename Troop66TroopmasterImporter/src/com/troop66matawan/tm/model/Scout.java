@@ -19,11 +19,14 @@ public class Scout {
 	private List<Activity> _activities = new ArrayList<Activity>();
 	private String _bsaID;
 	private Date _dateOfBirth;
+	private List<PositionOfResponsibility> _leadership = new ArrayList<PositionOfResponsibility>();
+	private Date _reportDate = new Date();
 
 	public JSON toJSON() {
-		final Integer JSONversion = 1;
+		final Integer JSONversion = 2;
 		JSON json = new JSON();	
 		
+		json.addKeyValuePair("reportDate", _reportDate);
 		json.addKeyValuePair("version",JSONversion.toString());
 		json.addKeyValuePair("lastName",_lastName);
 		json.addKeyValuePair("firstName",_firstName);
@@ -43,6 +46,12 @@ public class Scout {
 			meritBadges.addJson(mb.toJSON());
 		}
 		json.addKeyValuePair("meritbadges", meritBadges);
+		
+		JSONArray leadership = json.new JSONArray();
+		for (PositionOfResponsibility pos : _leadership) {
+			leadership.addJson(pos.toJSON());
+		}
+		json.addKeyValuePair("leadership", leadership);
 		return json;
 	}
 
@@ -129,6 +138,17 @@ public class Scout {
 		int months = (eighteen.get(Calendar.YEAR)* 12 + eighteen.get(Calendar.MONTH)) - (now.get(Calendar.YEAR)* 12 + now.get(Calendar.MONTH));
 		
 		return months;		
+	}
+
+	public List<PositionOfResponsibility> get_leadership() {
+		return _leadership;
+	}
+
+	public void add_leadership(PositionOfResponsibility pos) {
+		this._leadership.add(pos);
+	}
+	public void set_leadership(List<PositionOfResponsibility> _leadership) {
+		this._leadership = _leadership;
 	}
 
 }
