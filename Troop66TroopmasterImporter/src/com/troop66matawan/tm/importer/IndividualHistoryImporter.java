@@ -80,7 +80,7 @@ public class IndividualHistoryImporter extends TroopmasterImporter {
 						String pos1 = line.substring(0,19).trim();
 						if (pos1.length() > 0) {
 							int indexOfDash = line.indexOf('-',20);
-							String startDate = line.substring(20,indexOfDash-1).trim();
+							String startDate = line.substring(indexOfDash-10,indexOfDash-1).trim();
 							String endDate = line.substring(indexOfDash+2,indexOfDash+10).trim();
 							PositionOfResponsibility position = new PositionOfResponsibility(pos1);
 							position.set_startDate(stringToDate(startDate));
