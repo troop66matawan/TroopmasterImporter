@@ -21,9 +21,18 @@ public class Scout {
 	protected Date _dateOfBirth;
 	protected List<PositionOfResponsibility> _leadership = new ArrayList<PositionOfResponsibility>();
 	protected Date _reportDate = new Date();
+	protected ContactInfo _contactInfo;
 
 	public Date get_reportDate() {
 		return _reportDate;
+	}
+
+	public ContactInfo get_contactInfo() {
+		return _contactInfo;
+	}
+
+	public void set_contactInfo(ContactInfo _contactInfo) {
+		this._contactInfo = _contactInfo;
 	}
 
 	public JSON toJSON() {

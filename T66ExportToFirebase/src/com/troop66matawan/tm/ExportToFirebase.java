@@ -116,26 +116,32 @@ public class ExportToFirebase {
 			System.exit(1);
 		}
 
-		DatabaseReference scoutRef = FirebaseDatabase
-			.getInstance()
-			.getReference("scouts");
+		FirebaseDatabase dbInst = FirebaseDatabase.getInstance();
+		DatabaseReference scoutRef = dbInst.getReference("scouts");
+		DatabaseReference contactRef = dbInst.getReference("scout_contact");
 
 		ScoutFactory sf = ScoutFactory.getInstance();
 		Iterator<Scout> it = sf.getScouts().iterator();
 		Map<String, Object> scoutUpdates = new HashMap<String, Object>();
+		Map<String, Object> contactUpdates = new HashMap<String, Object>();
 
 		Scout scout = it.next();
 		ExportScout exScout = new ExportScout(scout);
 		exScout.parseActivities();
 		scoutUpdates.put(scout.get_firstName()+scout.get_lastName(),exScout);
+		contactUpdates.put(scout.get_firstName()+scout.get_lastName(), scout.get_contactInfo());
 
 		while (it.hasNext()) {
 			scout = it.next();
 			exScout = new ExportScout(scout);
 			exScout.parseActivities();
 			scoutUpdates.put(scout.get_firstName()+scout.get_lastName(),exScout);
+			contactUpdates.put(scout.get_firstName()+scout.get_lastName(), scout.get_contactInfo());
 		}
+		System.out.println("Uploading to firebase scouts");
 		scoutRef.updateChildren(scoutUpdates);
+		System.out.println("Uploading to firebase scout_contact");
+		contactRef.updateChildren(contactUpdates);
 	}
 
 }
