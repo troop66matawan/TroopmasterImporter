@@ -16,4 +16,11 @@ include 'api'
 include 'services:webservice'
 */
 
-rootProject.name = 'T66TrailTOEagle'
+include 'T66ExportToFirebase'
+include 'T66ExportToJSON'
+include 'T66MeritBadgesByYear'
+include 'T66RankAdvByYear'
+include 'T66TrailToEagle'
+include 'Troop66TroopmasterImporter'
+
+rootProject.name = 'TroopmasterImporter'
