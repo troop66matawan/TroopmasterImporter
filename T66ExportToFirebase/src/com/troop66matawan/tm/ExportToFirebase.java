@@ -96,7 +96,7 @@ public class ExportToFirebase {
 	}
 }
 
-	private static void export(String firebaseAccountSettings) {
+	static void export(String firebaseAccountSettings) {
 		try {
 			FileInputStream serviceAccount = new FileInputStream(firebaseAccountSettings);
 
