@@ -19,10 +19,23 @@ public class Scout {
 	protected List<Activity> _activities = new ArrayList<Activity>();
 	protected String _bsaID;
 	protected Date _dateOfBirth;
+	protected String _patrol;
 	protected List<PositionOfResponsibility> _leadership = new ArrayList<PositionOfResponsibility>();
 	protected Date _reportDate = new Date();
 	protected ContactInfo _contactInfo;
+	protected List<ContactInfo> _parentContactInfo = new ArrayList<ContactInfo>();
 
+	public List<ContactInfo> get_parentContactInfo() {
+		return _parentContactInfo;
+	}
+
+	public void set_parentContactInfo(List<ContactInfo> _parentContactInfo) {
+		this._parentContactInfo = _parentContactInfo;
+	}
+
+	public void add_parentContactInfo(ContactInfo parent) {
+		_parentContactInfo.add(parent);
+	}
 	public Date get_reportDate() {
 		return _reportDate;
 	}
@@ -162,6 +175,14 @@ public class Scout {
 	}
 	public void set_leadership(List<PositionOfResponsibility> _leadership) {
 		this._leadership = _leadership;
+	}
+
+	public String get_patrol() {
+		return _patrol;
+	}
+
+	public void set_patrol(String _patrol) {
+		this._patrol = _patrol;
 	}
 
 }

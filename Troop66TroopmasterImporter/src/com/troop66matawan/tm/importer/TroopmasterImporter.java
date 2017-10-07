@@ -63,4 +63,11 @@ public class TroopmasterImporter {
 		return null;
 
 	}
+
+	public boolean stringToBoolean(String x ) {
+		boolean rv = false;
+		if (x.toLowerCase().startsWith("y"))
+			rv = true;
+		return rv;	
+	}
 }
