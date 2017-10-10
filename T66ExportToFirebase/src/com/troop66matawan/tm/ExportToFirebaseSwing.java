@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.troop66matawan.tm.exporter.SwingConsole;
+import com.troop66matawan.tm.importer.AdultDataImporter;
 import com.troop66matawan.tm.importer.HeaderFormatException;
 import com.troop66matawan.tm.importer.IndividualHistoryImporter;
 import com.troop66matawan.tm.importer.LeadershipPositionDaysNeededImporter;
@@ -22,6 +24,7 @@ import com.troop66matawan.tm.importer.MeritBadgesEarnedImporter;
 import com.troop66matawan.tm.importer.RankBadgeMatrixImporter;
 import com.troop66matawan.tm.importer.ScoutDataImporter;
 import com.troop66matawan.tm.importer.ScoutIndividualParticipationImporter;
+import com.troop66matawan.tm.model.AdultFactory;
 
 public class ExportToFirebaseSwing {
 
@@ -33,6 +36,13 @@ public class ExportToFirebaseSwing {
 	private JTextField indivPartPath;
 	private JTextField indivHistoryPath;
 	private JTextField leadershipPath;
+	private JTextField adultDataPath;
+	private SwingConsole console;
+	private JButton btnInitFirebase;
+	private JButton btnImport;
+	private JButton btnExportScout;
+	private JButton btnExportUsers;
+	
 
 	/**
 	 * Launch the application.
@@ -61,6 +71,7 @@ public class ExportToFirebaseSwing {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		console = new SwingConsole("Export to Firebase - console");
 		frame = new JFrame("Export to Firebase");
 		frame.setBounds(100, 100, 778, 557);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -247,66 +258,176 @@ public class ExportToFirebaseSwing {
 		});
 		panel_6.add(button_5);
 		
+		JPanel panel_7 = new JPanel();
+		frame.getContentPane().add(panel_7);
+		panel_7.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JLabel label_7 = new JLabel("Adult Data");
+		panel_7.add(label_7);
+		
+		adultDataPath = new JTextField();
+		adultDataPath.setColumns(45);
+		panel_7.add(adultDataPath);
+		
+		JButton button_7 = new JButton("Browse");
+		button_7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final JFileChooser fc = new JFileChooser();
+				
+				int retval = fc.showOpenDialog(frame);
+				
+				if (retval == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					adultDataPath.setText(file.getAbsolutePath());
+				}
+			}
+		});
+		panel_7.add(button_7);
+		
 		
 		JPanel panel_8 = new JPanel();
 		frame.getContentPane().add(panel_8);
-		
-		JButton btnExport = new JButton("Export");
-		btnExport.addActionListener(new ActionListener() {
+		btnInitFirebase = new JButton("Init Firebase");
+		btnInitFirebase.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doImport();
-				ExportToFirebase.export(firebasePath.getText());
+				console.reset();
+				ExportToFirebase.initializeFirebase(firebasePath.getText(), console);
+				btnInitFirebase.setEnabled(false);
+				if (!btnImport.isEnabled()) {
+					btnExportScout.setEnabled(true);
+					btnExportUsers.setEnabled(true);
+				}
 			}
 		});
 		
-		panel_8.add(btnExport);
+		btnImport = new JButton("Import");
+		btnImport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				console.reset();
+				if (doImport()) {
+					btnImport.setEnabled(false);
+					if (!btnInitFirebase.isEnabled()){
+						btnExportScout.setEnabled(true);
+						btnExportUsers.setEnabled(true);
+					}
+				}
+			}
+		});
+		
+		btnExportScout = new JButton("Export Scouts");
+		btnExportScout.setEnabled(false);
+		btnExportScout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				console.reset();
+				ExportToFirebase.export(console);
+			}
+		});
+		
+		btnExportUsers = new JButton("Export Users");
+		btnExportUsers.setEnabled(false);
+		btnExportUsers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				console.reset();
+				console.show(true);
+				ExportToFirebase.updateUserSettings(console);
+			}
+		});
+	
+		panel_8.add(btnInitFirebase);
+		panel_8.add(btnImport);
+		panel_8.add(btnExportScout);
+		panel_8.add(btnExportUsers);
 	}
 
-	void doImport() {
+	boolean  doImport() {
 		try {
-			MeritBadgesEarnedImporter mbi = new MeritBadgesEarnedImporter(this.mbPath.getText());
-			mbi.doImport();
+			if (mbPath.getText().length() > 0) {
+				MeritBadgesEarnedImporter mbi = new MeritBadgesEarnedImporter(this.mbPath.getText());
+				mbi.doImport();
+			}
 		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
+			console.show(true);
+			console.append(e);
+			console.btnEnabled(true);
+			return false;
 		}
 		try{
-			RankBadgeMatrixImporter rai = new RankBadgeMatrixImporter(this.rankAdvPath.getText());
-			rai.doImport();
+			if (rankAdvPath.getText().length() > 0) {
+				RankBadgeMatrixImporter rai = new RankBadgeMatrixImporter(this.rankAdvPath.getText());
+				rai.doImport();
+			}
 		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
+			console.show(true);
+			console.append(e);
+			console.btnEnabled(true);
+			return false;
 		}
 		try {
-			ScoutDataImporter sdi = new ScoutDataImporter(this.scoutDataPath.getText(), true);
-			sdi.doImport();
+			if (scoutDataPath.getText().length() > 0) {
+				ScoutDataImporter sdi = new ScoutDataImporter(this.scoutDataPath.getText(), true);
+				sdi.doImport();
+			}
 		}catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
+			console.show(true);
+			console.append(e);
+			console.btnEnabled(true);
+			return false;
 		} catch (HeaderFormatException e) {
-			System.err.println("Unable to parse header for Scout data");
-			System.exit(1);
+			console.show(true);
+			console.append(e);
+			console.btnEnabled(true);
+			return false;
 		}
 		try {
-			ScoutIndividualParticipationImporter sipi = new ScoutIndividualParticipationImporter(this.indivPartPath.getText());
-			sipi.doImport();
-		} catch (IOException e ) {
-			e.printStackTrace();
-			System.exit(1);
+			if (adultDataPath.getText().length() > 0) {
+				AdultDataImporter adi = new AdultDataImporter(this.adultDataPath.getText(), true);
+				adi.doImport();
+			}
+		}catch (IOException e) {
+			console.show(true);
+			console.append(e);
+			console.btnEnabled(true);
+			return false;
+		} catch (HeaderFormatException e) {
+			console.show(true);
+			console.append(e);
+			console.btnEnabled(true);
+			return false;
 		}
 		try {
-			IndividualHistoryImporter sipi = new IndividualHistoryImporter(this.indivHistoryPath.getText());
-			sipi.doImport();
+			if (indivPartPath.getText().length() > 0) {
+				ScoutIndividualParticipationImporter sipi = new ScoutIndividualParticipationImporter(this.indivPartPath.getText());
+				sipi.doImport();
+			}
 		} catch (IOException e ) {
-			e.printStackTrace();
-			System.exit(1);			
+			console.show(true);
+			console.append(e);
+			console.btnEnabled(true);
+			return false;
+		}
+		try {
+			if (indivHistoryPath.getText().length() > 0) {
+				IndividualHistoryImporter sipi = new IndividualHistoryImporter(this.indivHistoryPath.getText());
+				sipi.doImport();
+			}
+		} catch (IOException e ) {
+			console.show(true);
+			console.append(e);
+			console.btnEnabled(true);
+			return false;
 		}		
 		try {
-			LeadershipPositionDaysNeededImporter lpi = new LeadershipPositionDaysNeededImporter(this.leadershipPath.getText());
-			lpi.doImport();
+			if (leadershipPath.getText().length() > 0) {
+				LeadershipPositionDaysNeededImporter lpi = new LeadershipPositionDaysNeededImporter(this.leadershipPath.getText());
+				lpi.doImport();
+			}
 		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
+			console.show(true);
+			console.append(e);
+			console.btnEnabled(true);
+			return false;
 		}
+		return true;
 	}
+	
 }

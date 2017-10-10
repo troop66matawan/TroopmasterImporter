@@ -9,43 +9,26 @@ import java.util.List;
 import com.troop66matawan.tm.exporter.JSON;
 import com.troop66matawan.tm.exporter.JSON.JSONArray;
 
-public class Scout {
-	protected String _lastName;
-	protected String _firstName;
+public class Scout extends BSAPerson {
 	protected List<MeritBadge> _meritBadges = new ArrayList<MeritBadge>();
 	protected List<ScoutAwards> _awards = new ArrayList<ScoutAwards>();
 	protected RankAdvancement _rankAdvancement;
 	protected Integer _campingNights=0;
 	protected List<Activity> _activities = new ArrayList<Activity>();
-	protected String _bsaID;
-	protected Date _dateOfBirth;
 	protected String _patrol;
 	protected List<PositionOfResponsibility> _leadership = new ArrayList<PositionOfResponsibility>();
-	protected Date _reportDate = new Date();
-	protected ContactInfo _contactInfo;
-	protected List<ContactInfo> _parentContactInfo = new ArrayList<ContactInfo>();
+	protected List<Parent> _parentContactInfo = new ArrayList<Parent>();
 
-	public List<ContactInfo> get_parentContactInfo() {
+	public List<Parent> get_parentContactInfo() {
 		return _parentContactInfo;
 	}
 
-	public void set_parentContactInfo(List<ContactInfo> _parentContactInfo) {
+	public void set_parentContactInfo(List<Parent> _parentContactInfo) {
 		this._parentContactInfo = _parentContactInfo;
 	}
 
-	public void add_parentContactInfo(ContactInfo parent) {
+	public void add_parentContactInfo(Parent parent) {
 		_parentContactInfo.add(parent);
-	}
-	public Date get_reportDate() {
-		return _reportDate;
-	}
-
-	public ContactInfo get_contactInfo() {
-		return _contactInfo;
-	}
-
-	public void set_contactInfo(ContactInfo _contactInfo) {
-		this._contactInfo = _contactInfo;
 	}
 
 	public JSON toJSON() {
@@ -97,18 +80,6 @@ public class Scout {
 		_lastName = lastname;
 		_firstName = firstname;
 	}
-	public String get_lastName() {
-		return _lastName;
-	}
-	public void set_lastName(String _lastName) {
-		this._lastName = _lastName;
-	}
-	public String get_firstName() {
-		return _firstName;
-	}
-	public void set_firstName(String _firstName) {
-		this._firstName = _firstName;
-	}
 	@Override
 	public boolean equals(Object obj) {
 		boolean rv = false;
@@ -139,18 +110,6 @@ public class Scout {
 	}
 	public void addActivity(Activity a) {
 		_activities.add(a);
-	}
-	public String get_bsaID() {
-		return _bsaID;
-	}
-	public void set_bsaID(String _bsaID) {
-		this._bsaID = _bsaID;
-	}
-	public Date get_dateOfBirth() {
-		return _dateOfBirth;
-	}
-	public void set_dateOfBirth(Date _dateOfBirth) {
-		this._dateOfBirth = _dateOfBirth;
 	}
 	public int monthsUntil18(Date dob)
 	{
