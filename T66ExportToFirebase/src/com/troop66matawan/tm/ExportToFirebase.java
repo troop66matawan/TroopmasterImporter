@@ -233,6 +233,7 @@ public class ExportToFirebase {
 			}
 			//wait until user records valid
 			Collection<Task<UserRecord>> r = authRequests.values();
+			int iterations = 0;
 			while (true) {
 				boolean complete = true;
 				Iterator<Task<UserRecord>> rIt = r.iterator();
@@ -241,6 +242,12 @@ public class ExportToFirebase {
 					if (!task.isSuccessful()) {
 						complete = false;
 						break;
+					} 
+					else {
+						if (iterations > 40) {
+							System.out.println(scout.get_firstName()+scout.get_lastName()+":"+contact.get_email1()+":"+task.getException().toString());
+							return;
+						}
 					}
 				}
 				if (complete) 
@@ -248,6 +255,7 @@ public class ExportToFirebase {
 				try {
 					//logger.append("sleeping .5 sec");
 					TimeUnit.MILLISECONDS.sleep(500);
+					++iterations;
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -30,6 +31,7 @@ public class ExportToFirebaseSwing {
 
 	private JFrame frame;
 	private JTextField firebasePath;
+	private JTextField reportDirPath;
 	private JTextField mbPath;
 	private JTextField rankAdvPath;
 	private JTextField scoutDataPath;
@@ -42,6 +44,7 @@ public class ExportToFirebaseSwing {
 	private JButton btnImport;
 	private JButton btnExportScout;
 	private JButton btnExportUsers;
+	File reportDir= null;
 	
 
 	/**
@@ -101,6 +104,37 @@ public class ExportToFirebaseSwing {
 			}
 		});
 		panel.add(btnNewButton);
+
+		JPanel panelDir = new JPanel();
+		frame.getContentPane().add(panelDir);
+		
+		JLabel lblReportIdr  = new JLabel("Report Path");
+		panelDir.add(lblReportIdr);
+		
+		reportDirPath = new JTextField();
+		panelDir.add(reportDirPath);
+		reportDirPath.setColumns(45);
+		
+		JButton btnReportPath = new JButton("Browse");
+		btnReportPath.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final JFileChooser fc = new JFileChooser();
+				
+				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				
+				int retval = fc.showOpenDialog(frame);
+				
+				if (retval == JFileChooser.APPROVE_OPTION) {
+					reportDir = fc.getSelectedFile();
+					reportDirPath.setText(reportDir.getAbsolutePath());
+				}								
+			}
+		});
+		panelDir.add(btnReportPath);
+		
+		
 		
 		JPanel panel_1 = new JPanel();
 		frame.getContentPane().add(panel_1);
@@ -117,7 +151,9 @@ public class ExportToFirebaseSwing {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser fc = new JFileChooser();
-				
+				if (reportDir != null ) {
+					fc.setCurrentDirectory(reportDir);
+				}
 				int retval = fc.showOpenDialog(frame);
 				
 				if (retval == JFileChooser.APPROVE_OPTION) {
@@ -143,6 +179,9 @@ public class ExportToFirebaseSwing {
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser fc = new JFileChooser();
+				if (reportDir != null ) {
+					fc.setCurrentDirectory(reportDir);
+				}
 				
 				int retval = fc.showOpenDialog(frame);
 				
@@ -169,6 +208,9 @@ public class ExportToFirebaseSwing {
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser fc = new JFileChooser();
+				if (reportDir != null ) {
+					fc.setCurrentDirectory(reportDir);
+				}
 				
 				int retval = fc.showOpenDialog(frame);
 				
@@ -196,6 +238,9 @@ public class ExportToFirebaseSwing {
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser fc = new JFileChooser();
 				
+				if (reportDir != null ) {
+					fc.setCurrentDirectory(reportDir);
+				}
 				int retval = fc.showOpenDialog(frame);
 				
 				if (retval == JFileChooser.APPROVE_OPTION) {
@@ -221,6 +266,9 @@ public class ExportToFirebaseSwing {
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser fc = new JFileChooser();
+				if (reportDir != null ) {
+					fc.setCurrentDirectory(reportDir);
+				}
 				
 				int retval = fc.showOpenDialog(frame);
 				
@@ -247,6 +295,9 @@ public class ExportToFirebaseSwing {
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser fc = new JFileChooser();
+				if (reportDir != null ) {
+					fc.setCurrentDirectory(reportDir);
+				}
 				
 				int retval = fc.showOpenDialog(frame);
 				
@@ -273,6 +324,9 @@ public class ExportToFirebaseSwing {
 		button_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser fc = new JFileChooser();
+				if (reportDir != null ) {
+					fc.setCurrentDirectory(reportDir);
+				}
 				
 				int retval = fc.showOpenDialog(frame);
 				
