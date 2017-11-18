@@ -42,7 +42,7 @@ public class IndividualHistoryImporter extends TroopmasterImporter {
 					// get current Position of Responsibility
 					String pos = line.substring(16,35).trim();
 					if (pos.length() > 0 ) {
-						String startDate = line.substring(47,55).trim();
+						String startDate = line.substring(46,54).trim();
 						Date today = new Date();
 						
 						PositionOfResponsibility position = new PositionOfResponsibility(pos);
@@ -57,7 +57,7 @@ public class IndividualHistoryImporter extends TroopmasterImporter {
 						// get current Position of Responsibility
 						String pos = line.substring(16,35).trim();
 						if (pos.length() > 0 ) {
-							String startDate = line.substring(47,55).trim();
+							String startDate = line.substring(46,54).trim();
 							Date today = new Date();
 							
 							PositionOfResponsibility position = new PositionOfResponsibility(pos);
