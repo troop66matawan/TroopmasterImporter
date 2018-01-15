@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -25,7 +24,7 @@ import com.troop66matawan.tm.importer.MeritBadgesEarnedImporter;
 import com.troop66matawan.tm.importer.RankBadgeMatrixImporter;
 import com.troop66matawan.tm.importer.ScoutDataImporter;
 import com.troop66matawan.tm.importer.ScoutIndividualParticipationImporter;
-import com.troop66matawan.tm.model.AdultFactory;
+import com.troop66matawan.tm.importer.ServiceProjectHoursNeededImporter;
 
 public class ExportToFirebaseSwing {
 
@@ -39,6 +38,7 @@ public class ExportToFirebaseSwing {
 	private JTextField indivHistoryPath;
 	private JTextField leadershipPath;
 	private JTextField adultDataPath;
+	private JTextField servicePath;
 	private SwingConsole console;
 	private JButton btnInitFirebase;
 	private JButton btnImport;
@@ -338,6 +338,34 @@ public class ExportToFirebaseSwing {
 		});
 		panel_7.add(button_7);
 		
+		JPanel panel_Service = new JPanel();
+		frame.getContentPane().add(panel_Service);
+		panel_Service.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JLabel label_8 = new JLabel("Service Hours");
+		panel_Service.add(label_8);
+		
+		servicePath = new JTextField();
+		servicePath.setColumns(45);
+		panel_Service.add(servicePath);
+		
+		JButton button_8 = new JButton("Browse");
+		button_8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final JFileChooser fc = new JFileChooser();
+				if (reportDir != null ) {
+					fc.setCurrentDirectory(reportDir);
+				}
+				
+				int retval = fc.showOpenDialog(frame);
+				
+				if (retval == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					servicePath.setText(file.getAbsolutePath());
+				}
+			}
+		});
+		panel_Service.add(button_8);
 		
 		JPanel panel_8 = new JPanel();
 		frame.getContentPane().add(panel_8);
@@ -474,6 +502,17 @@ public class ExportToFirebaseSwing {
 			if (leadershipPath.getText().length() > 0) {
 				LeadershipPositionDaysNeededImporter lpi = new LeadershipPositionDaysNeededImporter(this.leadershipPath.getText());
 				lpi.doImport();
+			}
+		} catch (IOException e) {
+			console.show(true);
+			console.append(e);
+			console.btnEnabled(true);
+			return false;
+		}
+		try {
+			if (servicePath.getText().length() > 0) {
+				ServiceProjectHoursNeededImporter spi = new ServiceProjectHoursNeededImporter(this.servicePath.getText());
+				spi.doImport();
 			}
 		} catch (IOException e) {
 			console.show(true);

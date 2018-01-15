@@ -18,15 +18,15 @@ Name                          Rank        Patrol              Phone             
 *LastName, FirstName          Star        Patrol name         (H)(###) ###-####     6     
 *LastName, FirstName          Star        Patrol name         (H)(###) ###-####     6     
 *LastName, FirstName          Star        Patrol name         (H)(###) ###-####     6     
-*LastName, FirstName          Star        Patrol name         (H)(###) ###-####     6     
+*LastName, FirstName          Star        Patrol name         (H)(###) ###-####    5.5     
 *LastName, FirstName          Star        Patrol name         (H)(###) ###-####     6     
 `
 
  */
 public class ServiceProjectHoursNeededImporter extends TroopmasterImporter {
-	private static final int SVC_HOURS_startindex = 84;
+	private static final int SVC_HOURS_startindex = 83;
 
-	ServiceProjectHoursNeededImporter(String filename) throws IOException {
+	public ServiceProjectHoursNeededImporter(String filename) throws IOException {
 		super(filename);
 	}
 
@@ -50,9 +50,15 @@ public class ServiceProjectHoursNeededImporter extends TroopmasterImporter {
 		if (ra == null || ra.getIsValid() != true)
 			ra = new RankAdvancement();
 		int index = SVC_HOURS_startindex;
-		int spaceAfterIndex = line.indexOf(" ", index);
+		int spaceAfterIndex = line.indexOf(" ", index+1);
 		String hoursString = line.substring(index, spaceAfterIndex).trim();
-		Integer hours = Integer.valueOf(hoursString);
+		Integer hours=0;
+		if (hoursString.contains(".")) {
+			Float floatHours = Float.valueOf(hoursString);
+			hours = Math.round(floatHours);
+		} else {
+			hours = Integer.valueOf(hoursString);
+		}
 		ra.set_neededServiceHours(hours);
 				
 		scout.set_rankAdvancement(ra);
