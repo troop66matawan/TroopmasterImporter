@@ -1,6 +1,14 @@
 package com.troop66matawan.tm.importer;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+
+import com.troop66matawan.tm.model.Activity;
+import com.troop66matawan.tm.model.ActivityFactory;
+import com.troop66matawan.tm.model.Camping;
+import com.troop66matawan.tm.model.Meeting;
+import com.troop66matawan.tm.model.ServiceProject;
 
 public class ActivityImporter extends TroopmasterImporter {
 	private final static String ACTIVITY_HDR = "Activity Type";
@@ -29,7 +37,7 @@ public class ActivityImporter extends TroopmasterImporter {
 	private int locationIdx;
 	private int remarksIdx;
 	
-	ActivityImporter(String filename) throws  IOException, HeaderFormatException  {
+	public ActivityImporter(String filename) throws  IOException, HeaderFormatException  {
 		super(filename);
 		activityIdx = _headerTokens.indexOf(ACTIVITY_HDR);
 		cabinCampIdx = _headerTokens.indexOf(CABINCAMP_HDR);
@@ -47,6 +55,66 @@ public class ActivityImporter extends TroopmasterImporter {
 		 backpackingIdx== -1 || dateIdx== -1 || startTimeIdx== -1 || endTimeIdx== -1 || amountIdx== -1 ||
 		 locationIdx== -1 || remarksIdx== -1) {
 			throw new HeaderFormatException();
+		}
+	}
+	
+	public void doImport() throws IOException {
+		ActivityFactory f = ActivityFactory.getInstance();
+		List<String> tokens = super.readTokenizedLine(); 
+		while (tokens != null) {
+			String activityType = tokens.get(activityIdx);
+			Activity a = null;
+			String dateString = tokens.get(dateIdx);
+			if (tokens.size() <= amountIdx) {
+				tokens = super.readTokenizedLine();
+				continue;				
+			}
+			String amountString = tokens.get(amountIdx);
+			String location = "";
+			if (tokens.size() > locationIdx ) {
+				location = tokens.get(locationIdx);
+			}
+			String remarks = "";
+			if (tokens.size() > remarksIdx) {
+				remarks = tokens.get(remarksIdx);
+			}
+			
+			
+			Date date = stringToDate(dateString);
+			Integer amount = 0;
+			try {
+				amount = Integer.parseInt(amountString);
+			} catch (NumberFormatException e)
+			{
+				// Try to see if floating 
+				try {
+					Float amt = Float.valueOf(amountString);
+					amount = Math.round(amt);
+				} catch (NumberFormatException ex) {
+					// give up do nothing;
+				}
+			}
+			switch (activityType) {
+				case "Camping": {
+					Boolean isCabin = tokens.get(cabinCampIdx).toLowerCase().contains("y"); 
+					Boolean isSummer = tokens.get(summerCampIdx).toLowerCase().contains("y");
+					a = new Camping(date, amount, location, remarks, isCabin , isSummer);
+					break;
+				}
+				case "Serv Proj": {
+					a = new ServiceProject(date, amount, location, remarks);
+					break;
+				}
+				case "Meeting": {
+					a = new Meeting(date, amount, location, remarks);
+					break;
+				}
+			}
+			if (a != null) {
+				f.addActivity(a);
+			}
+
+			tokens = super.readTokenizedLine();
 		}
 	}
 }
