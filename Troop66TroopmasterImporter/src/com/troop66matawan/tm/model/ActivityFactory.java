@@ -9,7 +9,7 @@ import java.util.Set;
 public class ActivityFactory {
 
 	private static ActivityFactory _instance = null;
-	private Map<String, List<Activity>> _activities = new HashMap<String, List<Activity>>();
+	protected Map<String, List<Activity>> _activities = new HashMap<String, List<Activity>>();
 	
 	private ActivityFactory() {
 		
@@ -36,7 +36,7 @@ public class ActivityFactory {
 		return _activities.get(activityType);
 	}
 	
-	public Set<String> getAcitivityTypes() {
+	public Set<String> getActivityTypes() {
 		return _activities.keySet();
 	}
 }
