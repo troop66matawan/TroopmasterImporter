@@ -340,7 +340,7 @@ public class ExportToFirebase {
 		FirebaseDatabase dbInst = FirebaseDatabase.getInstance();
 		DatabaseReference scoutRef = dbInst.getReference("scouts");
 		DatabaseReference contactRef = dbInst.getReference("scout_contact");
-		DatabaseReference actRef = dbInst.getReference();
+		DatabaseReference actRef = dbInst.getReference("troop_activities");
 
 		ScoutFactory sf = ScoutFactory.getInstance();
 		Iterator<Scout> it = sf.getScouts().iterator();
