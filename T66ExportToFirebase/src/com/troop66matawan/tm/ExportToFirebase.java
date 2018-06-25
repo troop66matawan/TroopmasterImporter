@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import com.google.firebase.FirebaseApp;
@@ -27,6 +28,7 @@ import com.troop66matawan.tm.importer.MeritBadgesEarnedImporter;
 import com.troop66matawan.tm.importer.RankBadgeMatrixImporter;
 import com.troop66matawan.tm.importer.ScoutDataImporter;
 import com.troop66matawan.tm.importer.ScoutIndividualParticipationImporter;
+import com.troop66matawan.tm.model.ActivityFactory;
 import com.troop66matawan.tm.model.Adult;
 import com.troop66matawan.tm.model.AdultFactory;
 import com.troop66matawan.tm.model.ContactInfo;
@@ -338,6 +340,7 @@ public class ExportToFirebase {
 		FirebaseDatabase dbInst = FirebaseDatabase.getInstance();
 		DatabaseReference scoutRef = dbInst.getReference("scouts");
 		DatabaseReference contactRef = dbInst.getReference("scout_contact");
+		DatabaseReference actRef = dbInst.getReference("troop_activities");
 
 		ScoutFactory sf = ScoutFactory.getInstance();
 		Iterator<Scout> it = sf.getScouts().iterator();
@@ -361,6 +364,13 @@ public class ExportToFirebase {
 		scoutRef.updateChildren(scoutUpdates);
 		logger.append("Uploading to firebase scout_contact");
 		contactRef.updateChildren(contactUpdates);
+		
+		ActivityFactory af = ActivityFactory.getInstance();
+		Map<String, Object> activityUpdates = new HashMap<String,Object>();
+		Set<String> activityTypes = af.getActivityTypes();
+		for (String activityType : activityTypes) {
+			activityUpdates.put(activityType, af.getActivities(activityType));
+		}
+		actRef.updateChildren(activityUpdates);
 	}
-
 }

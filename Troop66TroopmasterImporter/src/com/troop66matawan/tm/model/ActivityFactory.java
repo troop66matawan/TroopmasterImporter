@@ -1,6 +1,7 @@
 package com.troop66matawan.tm.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Set;
 public class ActivityFactory {
 
 	private static ActivityFactory _instance = null;
-	private Map<String, List<Activity>> _activities = new HashMap<String, List<Activity>>();
+	protected Map<String, List<Activity>> _activities = new HashMap<String, List<Activity>>();
 	
 	private ActivityFactory() {
 		
@@ -22,7 +23,10 @@ public class ActivityFactory {
 	}
 
 	public void addActivity(Activity a) {
-		String activityType = a.getClass().getName();
+		String fullClassName = a.getClass().getName();
+		String[] tokenArray = fullClassName.split("\\.");
+		List<String> tokens = Arrays.asList(tokenArray);
+		String activityType = tokens.get(tokens.size()-1);
 		
 		List<Activity> activities = _activities.get(activityType);
 		if (activities == null) {
@@ -36,7 +40,7 @@ public class ActivityFactory {
 		return _activities.get(activityType);
 	}
 	
-	public Set<String> getAcitivityTypes() {
+	public Set<String> getActivityTypes() {
 		return _activities.keySet();
 	}
 }

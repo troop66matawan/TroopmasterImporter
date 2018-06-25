@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.troop66matawan.tm.exporter.SwingConsole;
+import com.troop66matawan.tm.importer.ActivityImporter;
 import com.troop66matawan.tm.importer.AdultDataImporter;
 import com.troop66matawan.tm.importer.HeaderFormatException;
 import com.troop66matawan.tm.importer.IndividualHistoryImporter;
@@ -39,6 +40,7 @@ public class ExportToFirebaseSwing {
 	private JTextField leadershipPath;
 	private JTextField adultDataPath;
 	private JTextField servicePath;
+	private JTextField activityPath;
 	private SwingConsole console;
 	private JButton btnInitFirebase;
 	private JButton btnImport;
@@ -367,6 +369,35 @@ public class ExportToFirebaseSwing {
 		});
 		panel_Service.add(button_8);
 		
+		JPanel panel_activity = new JPanel();
+		frame.getContentPane().add(panel_activity);
+		panel_activity.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JLabel label_Activities = new JLabel("Activities");
+		panel_activity.add(label_Activities);
+		
+		activityPath = new JTextField();
+		activityPath.setColumns(45);
+		panel_activity.add(activityPath);
+		
+		JButton button_Activities = new JButton("Browse");
+		button_Activities.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final JFileChooser fc = new JFileChooser();
+				if (reportDir != null ) {
+					fc.setCurrentDirectory(reportDir);
+				}
+				
+				int retval = fc.showOpenDialog(frame);
+				
+				if (retval == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					activityPath.setText(file.getAbsolutePath());
+				}
+			}
+		});
+		panel_activity.add(button_Activities);
+		
 		JPanel panel_8 = new JPanel();
 		frame.getContentPane().add(panel_8);
 		btnInitFirebase = new JButton("Init Firebase");
@@ -515,6 +546,22 @@ public class ExportToFirebaseSwing {
 				spi.doImport();
 			}
 		} catch (IOException e) {
+			console.show(true);
+			console.append(e);
+			console.btnEnabled(true);
+			return false;
+		}
+		try {
+			if (activityPath.getText().length() > 0) {
+				ActivityImporter ai = new ActivityImporter(this.activityPath.getText());
+				ai.doImport();
+			}
+		} catch (IOException e) {
+			console.show(true);
+			console.append(e);
+			console.btnEnabled(true);
+			return false;
+		} catch (HeaderFormatException e) {
 			console.show(true);
 			console.append(e);
 			console.btnEnabled(true);
