@@ -38,6 +38,7 @@ public class ExportScout extends Scout {
 		super._meritBadges = scout.getMeritBadges();
 		super._rankAdvancement = scout.get_rankAdvancement();
 		super._reportDate = scout.get_reportDate();
+		super._joinedUnit = scout.get_joinedUnit();
 	}
 	
 	public void parseActivities() {
