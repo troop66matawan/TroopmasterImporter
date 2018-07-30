@@ -8,6 +8,7 @@ public abstract class BSAPerson {
 	protected String _bsaID;
 	protected Date _dateOfBirth;
 	protected Date _reportDate = new Date();
+	protected Date _joinedUnit;
 	protected ContactInfo _contactInfo;
 	
 	public String get_lastName() {
@@ -47,4 +48,11 @@ public abstract class BSAPerson {
 		this._contactInfo = _contactInfo;
 	}
 
+	public Date get_joinedUnit() {
+		return _joinedUnit;
+	}
+	
+	public void set_joinedUnit(Date dateJoinedUnit) {
+		this._joinedUnit = dateJoinedUnit;
+	}
 }

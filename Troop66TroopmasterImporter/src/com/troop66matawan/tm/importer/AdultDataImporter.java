@@ -142,6 +142,7 @@ public class AdultDataImporter extends TroopmasterImporter {
 			Adult a = f.getAdult(lName, fName);
 			a.set_bsaID(tokens.get(bsaIDIdx));
 			a.set_dateOfBirth(stringToDate(tokens.get(dobIdx)));
+			a.set_joinedUnit(stringToDate(tokens.get(joinedunitidx)));
 			ContactInfo contact = new ContactInfo(tokens.get(address1Idx),tokens.get(cityIdx),tokens.get(stateIdx),tokens.get(zipIdx));
 			contact.set_email1(tokens.get(email1Idx));
 			contact.set_email2(tokens.get(email2Idx));

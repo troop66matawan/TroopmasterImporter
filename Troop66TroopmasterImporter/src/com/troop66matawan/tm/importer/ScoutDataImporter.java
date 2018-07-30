@@ -257,6 +257,7 @@ private static String PARENT2EMAIL2_HDR = "Parent #2 Email #2";
 			Scout s = f.getScout(lName, fName);
 			s.set_bsaID(tokens.get(bsaIDIdx));
 			s.set_dateOfBirth(stringToDate(tokens.get(dobIdx)));
+			s.set_joinedUnit(stringToDate(tokens.get(joinedunitidx)));
 			ContactInfo contact = new ContactInfo(tokens.get(address1Idx),tokens.get(cityIdx),tokens.get(stateIdx),tokens.get(zipIdx));
 			contact.set_email1(tokens.get(email1Idx));
 			contact.set_email2(tokens.get(email2Idx));
