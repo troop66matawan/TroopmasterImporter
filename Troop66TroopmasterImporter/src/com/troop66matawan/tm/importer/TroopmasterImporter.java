@@ -57,6 +57,7 @@ public class TroopmasterImporter {
 			Integer year = Integer.valueOf( date[2]);
 			if (year < 100)
 				year += 2000;
+			c.clear();
 			c.set(year, Integer.valueOf(date[0])-1, Integer.valueOf(date[1]) );
 			return  c.getTime();			
 		}
