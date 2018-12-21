@@ -39,6 +39,7 @@ public class ExportScout extends Scout {
 		super._rankAdvancement = scout.get_rankAdvancement();
 		super._reportDate = scout.get_reportDate();
 		super._joinedUnit = scout.get_joinedUnit();
+		super._patrol = scout.get_patrol();
 	}
 	
 	public void parseActivities() {
