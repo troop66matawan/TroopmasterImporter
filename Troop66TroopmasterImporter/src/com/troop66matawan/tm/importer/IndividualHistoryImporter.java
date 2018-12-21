@@ -32,6 +32,16 @@ public class IndividualHistoryImporter extends TroopmasterImporter {
 					f.addScout(lName, fName);
 				}
 				scout = f.getScout(lName, fName);
+			} else if (scout == null && line.contains("(cont)")) {
+				int commaIndex = line.indexOf(",");
+				String lName = line.substring(0, commaIndex);
+				int spaceAfterNameIndex = line.indexOf(" ", commaIndex+2);
+				String fName = line.substring(commaIndex+2, spaceAfterNameIndex);
+
+				if (!f.hasScout(lName, fName)) {
+					f.addScout(lName, fName);
+				}
+				scout = f.getScout(lName, fName);				
 			} else if (scout != null)	{
 				if (line.contains("\f")){
 					leadershipStart = false;
