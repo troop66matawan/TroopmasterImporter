@@ -5,8 +5,14 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -47,6 +53,7 @@ public class ExportToFirebaseSwing {
 	private JButton btnExportScout;
 	private JButton btnExportUsers;
 	File reportDir= null;
+	final static private String configFile = "config.properties";
 	
 
 	/**
@@ -70,7 +77,76 @@ public class ExportToFirebaseSwing {
 	 */
 	public ExportToFirebaseSwing() {
 		initialize();
+		loadProperties();
 	}
+
+	private void loadProperties() {
+		Properties prop = new Properties();
+		InputStream input = null;
+
+		try {
+
+			input = new FileInputStream(configFile);
+
+			// load a properties file
+			prop.load(input);
+
+			firebasePath.setText(prop.getProperty("firebasePath"));
+			reportDirPath.setText(prop.getProperty("reportDirPath"));
+			mbPath.setText(prop.getProperty("mbPath"));
+			rankAdvPath.setText(prop.getProperty("rankAdvPath"));
+			scoutDataPath.setText(prop.getProperty("scoutDataPath"));
+			indivPartPath.setText(prop.getProperty("indivPartPath"));
+			indivHistoryPath.setText(prop.getProperty("indivHistoryPath"));
+			leadershipPath.setText(prop.getProperty("leadershipPath"));
+			servicePath.setText(prop.getProperty("servicePath"));
+			activityPath.setText(prop.getProperty("activityPath"));
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}		
+	}
+	
+	private void saveProperties() {
+		Properties prop = new Properties();
+		OutputStream output = null;
+
+		try {
+
+			output = new FileOutputStream(configFile);
+
+			prop.setProperty("firebasePath", firebasePath.getText() );
+			prop.setProperty("reportDirPath", reportDirPath.getText() );
+			prop.setProperty("mbPath", mbPath.getText() );
+			prop.setProperty("rankAdvPath", rankAdvPath.getText() );
+			prop.setProperty("scoutDataPath", scoutDataPath.getText() );
+			prop.setProperty("indivPartPath", indivPartPath.getText() );
+			prop.setProperty("indivHistoryPath", indivHistoryPath.getText() );
+			prop.setProperty("leadershipPath", leadershipPath.getText() );
+			prop.setProperty("servicePath", servicePath.getText() );
+			prop.setProperty("activityPath", activityPath.getText() );
+
+			// save properties to project root folder
+			prop.store(output, null);
+		} catch (IOException io) {
+			io.printStackTrace();
+		} finally {
+			if (output != null) {
+				try {
+					output.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}		
 
 	/**
 	 * Initialize the contents of the frame.
@@ -81,7 +157,12 @@ public class ExportToFirebaseSwing {
 		frame.setBounds(100, 100, 778, 557);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
-		
+	    frame.addWindowListener(new java.awt.event.WindowAdapter() {
+	        public void windowClosing(WindowEvent winEvt) {
+	        		saveProperties();
+	        }
+	    });
+	    
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel);
 		
