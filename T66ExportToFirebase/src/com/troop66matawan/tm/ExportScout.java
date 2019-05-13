@@ -6,6 +6,7 @@ import java.util.List;
 import com.troop66matawan.tm.model.Activity;
 import com.troop66matawan.tm.model.Camping;
 import com.troop66matawan.tm.model.Hiking;
+import com.troop66matawan.tm.model.Meeting;
 import com.troop66matawan.tm.model.Scout;
 import com.troop66matawan.tm.model.ServiceProject;
 
@@ -22,9 +23,14 @@ public class ExportScout extends Scout {
 	public List<Hiking> get_hiking() {
 		return _hiking;
 	}
+	
+	public List<Meeting> get_meeting() {
+		return _meeting;
+	}
 
 	protected List<ServiceProject> _service = new ArrayList<ServiceProject>();
 	protected List<Hiking> _hiking = new ArrayList<Hiking>();
+	protected List<Meeting> _meeting = new ArrayList<Meeting>();
 
 	public ExportScout(Scout scout) {
 		super(scout.get_lastName(), scout.get_firstName());
@@ -50,6 +56,8 @@ public class ExportScout extends Scout {
 				_hiking.add((Hiking)act);
 			} else if (act instanceof ServiceProject) {
 				_service.add((ServiceProject) act);
+			} else if (act instanceof Meeting) {
+				_meeting.add((Meeting)act);
 			}
 		}
 		super._activities = null;
