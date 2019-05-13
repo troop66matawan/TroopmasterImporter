@@ -11,7 +11,7 @@
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 
-project.version = '1.4.0'
+project.version = '1.4.1'
 
 sourceSets {
 	main {

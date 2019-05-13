@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.troop66matawan.tm.model.Camping;
 import com.troop66matawan.tm.model.Hiking;
+import com.troop66matawan.tm.model.Meeting;
 import com.troop66matawan.tm.model.Scout;
 import com.troop66matawan.tm.model.ScoutFactory;
 import com.troop66matawan.tm.model.ServiceProject;
@@ -82,6 +83,9 @@ public class ScoutIndividualParticipationImporter extends TroopmasterImporter{
 						{
 							scout.addActivity(new ServiceProject(stringToDate(date), amount, location, remarks));
 							
+						} else if (type.contains("Meeting"))
+						{
+							scout.addActivity(new Meeting(stringToDate(date),amount, location, remarks ));
 						}
 
 						f.updateScout(scout);
