@@ -341,17 +341,20 @@ public class ExportToFirebase {
 		DatabaseReference scoutRef = dbInst.getReference("scouts");
 		DatabaseReference contactRef = dbInst.getReference("scout_contact");
 		DatabaseReference actRef = dbInst.getReference("troop_activities");
+		DatabaseReference patrolRef = dbInst.getReference("scoutPatrol");
 
 		ScoutFactory sf = ScoutFactory.getInstance();
 		Iterator<Scout> it = sf.getScouts().iterator();
 		Map<String, Object> scoutUpdates = new HashMap<String, Object>();
 		Map<String, Object> contactUpdates = new HashMap<String, Object>();
+		Map<String, Object> scoutPatrolUpdate = new HashMap<String, Object>();
 
 		Scout scout = it.next();
 		ExportScout exScout = new ExportScout(scout);
 		exScout.parseActivities();
 		scoutUpdates.put(scout.get_firstName()+scout.get_lastName(),exScout);
 		contactUpdates.put(scout.get_firstName()+scout.get_lastName(), scout.get_contactInfo());
+		scoutPatrolUpdate.put(scout.get_firstName()+scout.get_lastName(), scout.get_patrol());
 
 		while (it.hasNext()) {
 			scout = it.next();
@@ -359,12 +362,15 @@ public class ExportToFirebase {
 			exScout.parseActivities();
 			scoutUpdates.put(scout.get_firstName()+scout.get_lastName(),exScout);
 			contactUpdates.put(scout.get_firstName()+scout.get_lastName(), scout.get_contactInfo());
+    		scoutPatrolUpdate.put(scout.get_firstName()+scout.get_lastName(), scout.get_patrol());
 		}
 		logger.append("Uploading to firebase scouts");
 		scoutRef.updateChildren(scoutUpdates);
 		logger.append("Uploading to firebase scout_contact");
 		contactRef.updateChildren(contactUpdates);
-		
+		logger.append("Uploading to firebase patrol");
+		patrolRef.updateChildren(scoutPatrolUpdate);
+
 		ActivityFactory af = ActivityFactory.getInstance();
 		Map<String, Object> activityUpdates = new HashMap<String,Object>();
 		Set<String> activityTypes = af.getActivityTypes();

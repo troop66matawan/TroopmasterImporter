@@ -55,7 +55,7 @@ public class ScoutIndividualParticipationImporter extends TroopmasterImporter{
 						String type = line.substring(16,29).trim();
 						Integer amount = 0;
 						try {
-							amount = Integer.valueOf(line.substring(31,34).trim());
+							amount = Integer.valueOf(line.substring(30,34).trim());
 						} catch (NumberFormatException e)
 						{
 							// Try to see if floating 
